@@ -3,17 +3,15 @@
 
 ### The idea
 
-This is going to be a scaffolding CLI tool that supports lots of templates, remote ones too.
-
+This is going to be a scaffolding CLI tool that supports lots of templates, remote ones too.  
 The templates will be rendered with a render engine, like mustache.  
-
 The repository will be available on **npm**.  
 
 #### Configuration
 
 The configuration file will be named `ska.yml` ideally.  
 
-It will contain *one of two* configuration structures:  
+It will contain *one of two* configuration structures:
 + an array of other path containing a `ska.yml` configuration file
 + an object containing the definition of a series of templates
 
