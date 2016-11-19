@@ -10,17 +10,24 @@ const CONFIG_FILENAME = 'ska.yml';
 export default class Configuration{
 
 	configuration: IConfiguration[];
+	paths: string[] = [];
+	static paths: string[];
 
 	get(): IConfiguration[]{
 		try{
 			if( !this.configuration )
 				this.configuration = this.parseConfiguration();
+			Configuration.paths = this.getPaths();
 			return this.configuration;
 		}catch( error ){
 			throw new Error( `Cannot find a configuration file.
 Either specify its path in package.json, under a 'ska' attribute,
 or create a configuration file in the current directory called ${CONFIG_FILENAME}.` );
 		}
+	}
+
+	getPaths(): string[]{
+		return this.paths;
 	}
 
 	private parseConfiguration( configuration?: IConfiguration, cwd: string = '.' ): IConfiguration[]{
@@ -59,12 +66,14 @@ or create a configuration file in the current directory called ${CONFIG_FILENAME
 			let ska: any = packageJson[ 'ska' ];
 			if( !ska )
 				throw new Error( `Ska definition not found in package.json.` );
+			this.paths.push( packagePath );
 			if( typeof ska == 'object' ){
 				skaConfiguration = ska;
 			}else if( typeof ska == 'string' ){
 				let skaPath: string = resolve( join( directory, ska ) );
 				if( !isFile( skaPath ) )
 					throw new Error( `Ska definition not found in [${skaPath}].` );
+				this.paths.push( skaPath );
 				skaConfiguration = safeLoad( this.getFileContent( skaPath ) );
 			}
 		}catch( error ){}
@@ -72,6 +81,7 @@ or create a configuration file in the current directory called ${CONFIG_FILENAME
 			let skaPath: string = resolve( join( directory, CONFIG_FILENAME ) );
 			if( !isFile( skaPath ) )
 				throw new Error( `Ska definition not found in [${skaPath}].` );
+			this.paths.push( skaPath );
 			skaConfiguration = safeLoad( this.getFileContent( skaPath ) );
 		}
 		return skaConfiguration;

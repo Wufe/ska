@@ -1,7 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 
 import {IListArguments} from '../cli';
-import {IConfiguration, ICommandConfiguration, ITemplateConfiguration, IVariableConfiguration} from '../core';
+import {Configuration, IConfiguration, ICommandConfiguration, ITemplateConfiguration, IVariableConfiguration} from '../core';
 import {cyan, green, gray, red, yellow, italic} from 'chalk';
 
 export const LIST = [
@@ -14,6 +14,10 @@ const generateLog: string = yellow( `ska generate` );
 
 export const list: ( configuration: IConfiguration[], args: IListArguments ) => void =
 	( configuration, args ) => {
+		if( !args.quiet ){
+			Configuration.paths.forEach( (path:string) => console.log( green( path ) ) );
+			console.log( `` );
+		}
 		configuration.forEach( ( configurationElement: IConfiguration ) => {
 			configurationElement = <ITemplateConfiguration>configurationElement;
 			if( !args.quiet )
