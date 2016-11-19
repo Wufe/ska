@@ -17,11 +17,11 @@ export default class Entrypoint{
 	parseArgs(): void{
 		let argumentParser: ArgumentParser = ( new Creator() ).createArgumentParser();
 		this.arguments = argumentParser.parseArgs();
+		//console.log( this.arguments );
 	}
 
 	getConfiguration(): void{
 		this.configuration = ( new Configuration() ).get();
-		//console.log( JSON.stringify( this.configuration, null, 2 ) );
 	}
 
 	dispatch(): void{

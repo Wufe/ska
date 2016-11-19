@@ -28,3 +28,10 @@ commands:
   - l
   - ls
   help: List all available templates.
+  args:
+  - id:
+    - --quiet
+    help: List templates only.
+    nargs: 0
+    action: storeTrue
+    defaultValue: false

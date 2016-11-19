@@ -1,4 +1,4 @@
-import {IArguments} from '../cli';
+import {IArguments, IListArguments} from '../cli';
 import {IConfiguration} from '../core';
 import {LIST, list} from '.';
 
@@ -14,7 +14,7 @@ export default class Dispatcher{
 
 	dispatch(): void{
 		if( LIST.indexOf( this.arguments.action ) > -1 ){
-			list( this.configuration );
+			list( this.configuration, <IListArguments>this.arguments );
 		}
 	}
 
