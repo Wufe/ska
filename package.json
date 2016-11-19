@@ -1,6 +1,6 @@
 {
   "name": "ska",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Scaffolding CLI tool",
   "main": "lib/index.js",
   "scripts": {
