@@ -1,9 +1,55 @@
 # SKA
 ### Scaffolding CLI tool
 
+### How to install & use
+
+#### Install
+
+`npm i -D ska` || `yarn add --dev`
+
+#### Utilization
+
+Create a `ska.yml` file in project root folder.
+
+`/ska.yml`
+
+```yaml
+- scaffolding/
+```
+
+Now create the real scaffolding template and its configuration file.  
+
+`/scaffolding/ska.yml`
+
+```yaml
+name: My Scaffolding Template   # Simple name
+definition:                     # Here starts the real definition of the template
+- command: component            # Command to call when generating ( i.e. `ska gen <component>` )
+  info: Create my component.    # Short description
+  template: component.js        # Path to the template ( powered by [mustache](https://github.com/janl/mustache.js/) )
+  destination: src/components   # Default destination for the generated file
+  variables:                    # Variables requested by the template
+  - id: name
+    info: Name of the component
+```
+
+Then populate `component.js` with your [mustache](https://github.com/janl/mustache.js/) template.  
+
+`/scaffolding/component.js`
+
+```js
+import {Component} from 'react';
+
+export default class {{name}} extends Component{}
+```
+
+Call the template generation and save it
+
+`$ ska gen component MyComponent > ./src/components/MyComponent.js`
+
 ### The idea
 
-This is going to be a scaffolding CLI tool that supports lots of templates, remote ones too.  
+This is a scaffolding CLI tool that supports lots of templates, remote ones too.  
 The templates will be rendered with a render engine, like mustache.  
 The repository will be available on **npm**.  
 
@@ -62,6 +108,33 @@ If `--save` argument is provided, it will save the file to the default destinati
 **list** ( alias `l`, `ls` )  
 List all available templates.
 
+#### String helpers
+
+**Helpers** can be called in mustache:
+
+E.g.:
+
+```js
+export default class {{#capitalize}}{{name}}{{/capitalize}}{
+    constructor(){}
+}
+```
+
+`$ ska gen class mYcLaSsNaMe`
+will generate:
+
+```js
+export default class Myclassname{
+    constructor(){}
+}
+```
+
+**Available helpers**:
+
++ `uppercase`
++ `lowercase`
++ `capitalize`
+
 #### Examples
 
 `$ ska generate reducer Notification > ./src/reducers/notificationReducer.js`  
@@ -106,6 +179,22 @@ In order to mantain the root directory of the project clean, the `ska.yml` path 
     ...
 }
 ```
+
+### Reporting issues
+
++ Look for any related issues.  
++ If you find an issue that seems related, plase comment there instead of creating a new one.  
++ If you find no related issue, create a new one.  
++ Include all details you can ( operative system, environment, interpreter version, etc.. )  
++ Include the error log.  
++ Remember to check the discussion and update if there are changes.
+
+### Contributing
+
++ Fork the repository  
++ Create your feature branch  
++ Commit your changes and push the branch  
++ Submit a pull request  
 
 #### Furthermore
 
