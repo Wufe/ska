@@ -4,7 +4,7 @@ export interface IActionArguments{
 
 export interface IGenerateArguments extends IActionArguments{
 	name?: string;
-	variables?: string[];
+	values?: string[];
 	save: boolean;
 }
 

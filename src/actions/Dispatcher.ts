@@ -1,6 +1,6 @@
-import {IArguments, IListArguments} from '../cli';
+import {IArguments, IGenerateArguments, IListArguments} from '../cli';
 import {IConfiguration} from '../core';
-import {LIST, list} from '.';
+import {GENERATE, generate, LIST, list} from '.';
 
 export default class Dispatcher{
 
@@ -15,6 +15,8 @@ export default class Dispatcher{
 	dispatch(): void{
 		if( LIST.indexOf( this.arguments.action ) > -1 ){
 			list( this.configuration, <IListArguments>this.arguments );
+		}else if( GENERATE.indexOf( this.arguments.action ) > -1 ){
+			generate( this.configuration, <IGenerateArguments>this.arguments );
 		}
 	}
 

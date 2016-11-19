@@ -60,7 +60,40 @@ It will generate the file and output it in the console.
 If `--save` argument is provided, it will save the file to the default destination.  
 
 **list** ( alias `l`, `ls` )  
-List all available templates.  
+List all available templates.
+
+#### Examples
+
+`$ ska generate reducer Notification > ./src/reducers/notificationReducer.js`  
+
+will create `src/reducers/notificationReducer.js` with the following content:  
+
+```js
+/// <reference path="../../../../typings/index.d.ts" />
+
+import {Action} from '../actions';
+import {Reducer} from 'redux';
+
+const notificationReducer: ( state: any, action: any ) => any =
+  function( state = app, action ){
+
+    let {payload} = action;
+
+    switch( action.type ){
+      default:
+        return state;
+    }
+  };
+
+export default notificationReducer;
+```
+
+Its template is defined in `scaffolding/redux/reducer.js`.
+
+**Save**
+
+You can also use `--save` to automatically save the file with the **name** provided in the arguments, and the folder provided by `ska.yml` configuration file.
+
 
 #### Info
 

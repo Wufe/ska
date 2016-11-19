@@ -3,7 +3,7 @@
 import {readFileSync} from 'fs';
 import {join, resolve} from 'path';
 import {safeLoad} from 'js-yaml';
-import {IConfiguration, IIndexConfiguration, ITemplateConfiguration, isDirectory, isFile} from '.';
+import {IConfiguration, ICommandConfiguration, IIndexConfiguration, ITemplateConfiguration, isDirectory, isFile} from '.';
 
 const CONFIG_FILENAME = 'ska.yml';
 
@@ -39,6 +39,10 @@ or create a configuration file in the current directory called ${CONFIG_FILENAME
 			});
 		}else{
 			configuration = <ITemplateConfiguration>configuration;
+			configuration.definition.map( ( command: ICommandConfiguration ) => {
+				command.template = resolve( join( cwd, command.template ) );
+				return command;
+			});
 			returnConfiguration.push( configuration );
 		}
 		return returnConfiguration;

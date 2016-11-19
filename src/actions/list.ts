@@ -5,14 +5,12 @@ import {IConfiguration, ICommandConfiguration, ITemplateConfiguration, IVariable
 import {cyan, green, gray, red, yellow, italic} from 'chalk';
 
 export const LIST = [
-	'ls',
 	'list',
-	'l'
+	'l',
+	'ls'
 ];
 
 const generateLog: string = yellow( `ska generate` );
-const infoLog: string = italic( 'Info' );
-const destinationLog: string = italic( 'Destination' );
 
 export const list: ( configuration: IConfiguration[], args: IListArguments ) => void =
 	( configuration, args ) => {
@@ -27,9 +25,10 @@ export const list: ( configuration: IConfiguration[], args: IListArguments ) => 
 						command.variables
 						.map( ( variable: IVariableConfiguration ) => `<${yellow( variable.id )}>` )
 						.join( ' ' );
-					console.log( `  ${generateLog} ${red(command.command)} ${variables}` );
-					console.log( `  ${command.info}` );
-					console.log( `  [${command.destination}]` )
+					console.log( `  ${generateLog} ${red(command.command)} ${variables} - ${command.info}` );
+					console.log( `` );
+					console.log( `  Source: ${command.template}` )
+					console.log( `  Destination: ${command.destination}` )
 					console.log( `` );
 				}else{
 					console.log( command.command );
@@ -37,5 +36,5 @@ export const list: ( configuration: IConfiguration[], args: IListArguments ) => 
 				
 			});
 			
-		})
+		});
 	};
