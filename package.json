@@ -1,0 +1,24 @@
+{
+  "name": "ska",
+  "version": "0.0.1",
+  "description": "Scaffolding CLI tool",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wufe/ska.git"
+  },
+  "keywords": [
+    "scaffolding",
+    "ska",
+    "template"
+  ],
+  "author": "Simone Bembi <simone.bembi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wufe/ska/issues"
+  },
+  "homepage": "https://github.com/Wufe/ska#readme"
+}
