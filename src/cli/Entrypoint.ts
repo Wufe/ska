@@ -2,7 +2,7 @@
 
 import {ArgumentParser} from 'argparse';
 import {Creator} from '.';
-import {Configuration} from '../core';
+import {Configuration, IConfiguration} from '../core';
 
 import {red as Red} from 'chalk';
 
@@ -32,8 +32,8 @@ export default class Entrypoint{
 	}
 
 	getConfiguration(): void{
-		let configuration: Configuration = new Configuration();
-		configuration.get();
+		let configuration: IConfiguration[] = ( new Configuration() ).get();
+		console.log( JSON.stringify( configuration, null, 2 ) );
 	}
 
 	run(){

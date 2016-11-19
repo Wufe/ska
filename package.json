@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npm test"
   },
+  "ska": "config/skar.yml",
   "bin": "bin/ska",
   "repository": {
     "type": "git",

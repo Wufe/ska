@@ -1,0 +1,9 @@
+name: react-scaffolding
+definition:
+- command: component
+  info: Create a component given a name.
+  template: component.js
+  destination: src/components/
+  variables:
+  - id: name
+    info: Name of the component.

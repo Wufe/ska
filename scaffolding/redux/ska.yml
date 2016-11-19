@@ -1,0 +1,9 @@
+name: redux-scaffolding
+definition:
+- command: reducer
+  info: Create a reducer given a name.
+  template: reducer.js
+  destination: src/reducers/
+  variables:
+  - id: name
+    info: Name of the reducer.

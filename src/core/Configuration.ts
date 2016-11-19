@@ -3,66 +3,86 @@
 import {readFileSync} from 'fs';
 import {join, resolve} from 'path';
 import {safeLoad} from 'js-yaml';
-import {IConfiguration, isDirectory, isFile} from '.';
+import {IConfiguration, IIndexConfiguration, ITemplateConfiguration, isDirectory, isFile} from '.';
 
 const CONFIG_FILENAME = 'ska.yml';
 
 export default class Configuration{
 
-	configuration: IConfiguration;
+	configuration: IConfiguration[];
 
-	get(): IConfiguration{
-		if( !this.configuration )
-			this.findRootConfiguration();
-		return this.configuration;
-	}
-
-	private findRootConfiguration(): void{
-		let skaConfiguration: any = this.searchConfigurationInPackage();
-		if( !skaConfiguration )
-			skaConfiguration = this.searchConfigurationInCurrentDirectory();
-		if( !skaConfiguration )
+	get(): IConfiguration[]{
+		try{
+			if( !this.configuration )
+				this.configuration = this.parseConfiguration();
+			return this.configuration;
+		}catch( error ){
 			throw new Error( `Cannot find a configuration file.
 Either specify its path in package.json, under a 'ska' attribute,
 or create a configuration file in the current directory called ${CONFIG_FILENAME}.` );
+		}
+	}
+
+	private parseConfiguration( configuration?: IConfiguration, cwd: string = '.' ): IConfiguration[]{
+		if( !configuration )
+			configuration = this.searchConfiguration();
+		let returnConfiguration: IConfiguration[] = [];
+		if( this.isArray( configuration ) ){
+			configuration = <IIndexConfiguration>configuration;
+			configuration.forEach( ( configurationPath: string ) => {
+				try{
+					let configurationWorkingDir: string = resolve( join ( cwd, configurationPath ) )
+					let configurationParsed: IConfiguration = this.searchConfiguration( configurationWorkingDir );
+					let foundConfigurations: IConfiguration[] = this.parseConfiguration( configurationParsed, configurationWorkingDir );
+					returnConfiguration.push( ...foundConfigurations );
+				}catch( error ){}
+			});
+		}else{
+			configuration = <ITemplateConfiguration>configuration;
+			returnConfiguration.push( configuration );
+		}
+		return returnConfiguration;
+	}
+
+	private searchConfiguration( directory: string = '.' ): IConfiguration{
+
+		let skaConfiguration: IConfiguration;
 		try{
-			this.configuration = safeLoad( skaConfiguration );
-		}catch( error ){
-			throw error;
-		}
-	}
-
-	private searchConfigurationInPackage(): string{
-		let packagePath: string = resolve( join( '.', 'package.json' ) );
-		let skaConfiguration: string;
-		if( isFile( packagePath ) ){
-			let packageFile: string = readFileSync( packagePath, 'utf8' );
-			try{
-				let packageJSON: {
-					[key: string]: any
-				} = JSON.parse( packageFile );
-				if( packageJSON[ 'ska' ] !== undefined ){
-					let skaSettings: any = packageJSON[ 'ska' ];
-					if( typeof skaSettings == 'object' ){
-						skaConfiguration = skaSettings;
-					}else if( typeof skaSettings == 'string' ){
-						let configurationPath: string = resolve( join ( '.', skaSettings ) );
-						if( isFile( configurationPath ) ){
-							skaConfiguration = readFileSync( configurationPath, 'utf8' );
-						}
-					}
-				}
-			}catch( error ){}
+			let packagePath: string = resolve( join( directory, 'package.json' ) );
+			if( !isFile( packagePath ) )
+				throw new Error( `Package file not found.` );
+			let packageJson: { [key:string]: any } = JSON.parse( this.getFileContent( packagePath ) );
+			let ska: any = packageJson[ 'ska' ];
+			if( !ska )
+				throw new Error( `Ska definition not found in package.json.` );
+			if( typeof ska == 'object' ){
+				skaConfiguration = ska;
+			}else if( typeof ska == 'string' ){
+				let skaPath: string = resolve( join( directory, ska ) );
+				if( !isFile( skaPath ) )
+					throw new Error( `Ska definition not found in [${skaPath}].` );
+				skaConfiguration = safeLoad( this.getFileContent( skaPath ) );
+			}
+		}catch( error ){}
+		if( !skaConfiguration ){
+			let skaPath: string = resolve( join( directory, CONFIG_FILENAME ) );
+			if( !isFile( skaPath ) )
+				throw new Error( `Ska definition not found in [${skaPath}].` );
+			skaConfiguration = safeLoad( this.getFileContent( skaPath ) );
 		}
 		return skaConfiguration;
 	}
 
-	private searchConfigurationInCurrentDirectory(): string{
-		let skaConfiguration: string;
-		let configurationPath: string = resolve( join ( '.', 'ska.yml' ) );
-		if( isFile( configurationPath ) )
-			skaConfiguration = readFileSync( configurationPath, 'utf8' );
-		return skaConfiguration;
+	private isArray( obj: any ){
+		return obj.constructor === [].constructor;
+	}
+
+	private getFileContent( path: string ){
+		if( isFile( path ) ){
+			return readFileSync( path, 'utf8' );
+		}else{
+			throw new Error( `File not found [${path}].` );
+		}
 	}
 
 }
