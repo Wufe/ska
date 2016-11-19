@@ -53,6 +53,15 @@ definition:
     info: The superclass ( usually Component )
 ```
 
+#### Main commands
+
+**generate** ( alias `g`, `gen` )  
+It will generate the file and output it in the console.  
+If `--save` argument is provided, it will save the file to the default destination.  
+
+**list** ( alias `l`, `ls` )  
+List all available templates.  
+
 #### Info
 
 In order to mantain the root directory of the project clean, the `ska.yml` path can be specified into a `package.json`, e.g.  

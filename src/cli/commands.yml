@@ -6,6 +6,7 @@ commands:
   addHelp: true
   aliases:
   - g
+  - gen
   help: Generate an element.
   args:
   - id:
@@ -15,6 +16,12 @@ commands:
     - values
     help: Values to be replaced from template variables.
     nargs: "*"
+  - id:
+    - --save
+    help: Save the file to destination. Print to console otherwise.
+    nargs: 0
+    action: storeTrue
+    defaultValue: false
 - id: list
   addHelp: true
   aliases:

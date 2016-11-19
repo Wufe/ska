@@ -1,46 +1,38 @@
 /// <reference path="../../typings/index.d.ts" />
 
 import {ArgumentParser} from 'argparse';
-import {Creator} from '.';
+import {Creator, IArguments} from '.';
 import {Configuration, IConfiguration} from '../core';
+import {Dispatcher} from '../actions';
 
 import {red as Red} from 'chalk';
 
-interface Arguments{
-	action: string;
-}
-
-interface GenerateArguments extends Arguments{
-	name?: string;
-	variables?: string[];
-}
-
 export default class Entrypoint{
 
-	argumentParser: ArgumentParser;
-	args: GenerateArguments;
+	arguments: IArguments;
+	configuration: IConfiguration[];
 
 	constructor(){}
 
-	setup(): void{
-		let creator: Creator = new Creator();
-		this.argumentParser = creator.createArgumentParser();
-	}
-
 	parseArgs(): void{
-		this.args = this.argumentParser.parseArgs();
+		let argumentParser: ArgumentParser = ( new Creator() ).createArgumentParser();
+		this.arguments = argumentParser.parseArgs();
 	}
 
 	getConfiguration(): void{
-		let configuration: IConfiguration[] = ( new Configuration() ).get();
-		console.log( JSON.stringify( configuration, null, 2 ) );
+		this.configuration = ( new Configuration() ).get();
+		//console.log( JSON.stringify( this.configuration, null, 2 ) );
+	}
+
+	dispatch(): void{
+		( new Dispatcher( this.configuration, this.arguments ) ).dispatch();
 	}
 
 	run(){
 		try{
-			this.setup();
 			this.parseArgs();
 			this.getConfiguration();
+			this.dispatch();
 		}catch( error ){
 			console.error( Red( error.message ) );
 		}
