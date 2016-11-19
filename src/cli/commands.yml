@@ -1,0 +1,23 @@
+---
+title: Actions
+dest: action
+commands:
+- id: generate
+  addHelp: true
+  aliases:
+  - g
+  help: Generate an element.
+  args:
+  - id:
+    - name
+    help: Start the server attached to the cli process.
+  - id:
+    - values
+    help: Values to be replaced from template variables.
+    nargs: "*"
+- id: list
+  addHelp: true
+  aliases:
+  - l
+  - ls
+  help: List all available templates.

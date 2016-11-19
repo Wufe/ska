@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+let Ska = require( __dirname + "/../lib/index.js" );
+let Entrypoint = Ska.Entrypoint;
+( new Entrypoint() ).run();

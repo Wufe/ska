@@ -1,0 +1,11 @@
+{
+  "name": "ska",
+  "dependencies": {},
+  "globalDependencies": {
+    "argparse": "registry:dt/argparse#1.0.3+20160316155526",
+    "chalk": "registry:dt/chalk#0.4.0+20160317120654",
+    "js-yaml": "registry:dt/js-yaml#3.5.2+20160316171810",
+    "node": "registry:dt/node#6.0.0+20161110151007",
+    "should": "registry:dt/should#8.1.1+20160608082854"
+  }
+}
