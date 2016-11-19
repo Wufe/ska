@@ -5,7 +5,7 @@
 
 #### Install
 
-`npm i -D ska` || `yarn add --dev`
+`npm i -D ska` || `yarn add ska --dev`
 
 #### Utilization
 
